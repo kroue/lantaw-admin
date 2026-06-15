@@ -9,8 +9,44 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as UsersRouteImport } from './routes/users'
+import { Route as TransactionsRouteImport } from './routes/transactions'
+import { Route as RewardsRouteImport } from './routes/rewards'
+import { Route as RedemptionsRouteImport } from './routes/redemptions'
+import { Route as AdvertisersRouteImport } from './routes/advertisers'
+import { Route as AdsRouteImport } from './routes/ads'
 import { Route as IndexRouteImport } from './routes/index'
 
+const UsersRoute = UsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TransactionsRoute = TransactionsRouteImport.update({
+  id: '/transactions',
+  path: '/transactions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RewardsRoute = RewardsRouteImport.update({
+  id: '/rewards',
+  path: '/rewards',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RedemptionsRoute = RedemptionsRouteImport.update({
+  id: '/redemptions',
+  path: '/redemptions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdvertisersRoute = AdvertisersRouteImport.update({
+  id: '/advertisers',
+  path: '/advertisers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdsRoute = AdsRouteImport.update({
+  id: '/ads',
+  path: '/ads',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +55,116 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ads': typeof AdsRoute
+  '/advertisers': typeof AdvertisersRoute
+  '/redemptions': typeof RedemptionsRoute
+  '/rewards': typeof RewardsRoute
+  '/transactions': typeof TransactionsRoute
+  '/users': typeof UsersRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ads': typeof AdsRoute
+  '/advertisers': typeof AdvertisersRoute
+  '/redemptions': typeof RedemptionsRoute
+  '/rewards': typeof RewardsRoute
+  '/transactions': typeof TransactionsRoute
+  '/users': typeof UsersRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ads': typeof AdsRoute
+  '/advertisers': typeof AdvertisersRoute
+  '/redemptions': typeof RedemptionsRoute
+  '/rewards': typeof RewardsRoute
+  '/transactions': typeof TransactionsRoute
+  '/users': typeof UsersRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/ads'
+    | '/advertisers'
+    | '/redemptions'
+    | '/rewards'
+    | '/transactions'
+    | '/users'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/ads'
+    | '/advertisers'
+    | '/redemptions'
+    | '/rewards'
+    | '/transactions'
+    | '/users'
+  id:
+    | '__root__'
+    | '/'
+    | '/ads'
+    | '/advertisers'
+    | '/redemptions'
+    | '/rewards'
+    | '/transactions'
+    | '/users'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdsRoute: typeof AdsRoute
+  AdvertisersRoute: typeof AdvertisersRoute
+  RedemptionsRoute: typeof RedemptionsRoute
+  RewardsRoute: typeof RewardsRoute
+  TransactionsRoute: typeof TransactionsRoute
+  UsersRoute: typeof UsersRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/users': {
+      id: '/users'
+      path: '/users'
+      fullPath: '/users'
+      preLoaderRoute: typeof UsersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/transactions': {
+      id: '/transactions'
+      path: '/transactions'
+      fullPath: '/transactions'
+      preLoaderRoute: typeof TransactionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rewards': {
+      id: '/rewards'
+      path: '/rewards'
+      fullPath: '/rewards'
+      preLoaderRoute: typeof RewardsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/redemptions': {
+      id: '/redemptions'
+      path: '/redemptions'
+      fullPath: '/redemptions'
+      preLoaderRoute: typeof RedemptionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/advertisers': {
+      id: '/advertisers'
+      path: '/advertisers'
+      fullPath: '/advertisers'
+      preLoaderRoute: typeof AdvertisersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ads': {
+      id: '/ads'
+      path: '/ads'
+      fullPath: '/ads'
+      preLoaderRoute: typeof AdsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,17 +177,13 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdsRoute: AdsRoute,
+  AdvertisersRoute: AdvertisersRoute,
+  RedemptionsRoute: RedemptionsRoute,
+  RewardsRoute: RewardsRoute,
+  TransactionsRoute: TransactionsRoute,
+  UsersRoute: UsersRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
